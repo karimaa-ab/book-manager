@@ -1,12 +1,12 @@
 import { livres } from "./state.js";
 
-export const afficherLivres = () => {
+export const afficherLivres = (livresAAfficher = livres) => {
 
     const listeLivres = document.querySelector("#mes-livres .grid");
 
     listeLivres.innerHTML = "";
 
-    livres.forEach((livre, index) => {
+    livresAAfficher.forEach((livre, index) => {
 
         const carteLivre = document.createElement("article");
 
