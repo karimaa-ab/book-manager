@@ -15,8 +15,8 @@ export const afficherLivres = () => {
         carteLivre.innerHTML = `
             <h3 class="text-lg font-bold">${livre.titre}</h3>
             <p class="mt-2 text-sm text-slate-500">Auteur : ${livre.auteur}</p>
-            <p class="mt-2 text-sm">Année : ${livre.annee || "Non précisée"}</p>
-            <p class="mt-2 text-sm">Genre : ${livre.genre || "Non précisé"}</p>
+            <p class="mt-2 text-sm">Année : ${livre.annee || "Non précisée."}</p>
+            <p class="mt-2 text-sm">Genre : ${livre.genre || "Non précisé."}</p>
             <p class="mt-2 text-sm">Description : ${livre.description || ""}</p>
             <p class="mt-2 text-sm">Statut : ${livre.statut}</p>
         `;
