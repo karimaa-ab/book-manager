@@ -20,12 +20,12 @@ const listeLivres = document.querySelector("#mes-livres .grid");
 
 afficherLivres();
 
-// 2. Afficher le formulaire
+// 2. Afficher le formulaire.
 btnAjouter.addEventListener("click", () => {
     formulaireLivre.classList.remove("hidden");
 });
 
-// 3. Masquer le formulaire
+// 3. Masquer le formulaire.
 btnAnnuler.addEventListener("click", () => {
     formulaireLivre.classList.add("hidden");
 });
