@@ -4,6 +4,8 @@ import { livres } from "./state.js";
 import { afficherLivres } from "./ui.js";
 
 const btnAjouter = document.querySelector("#btn-ajouter");
+const inputRecherche = document.querySelector('#recherche input[type="search"]');
+const triLivres = document.querySelector("#tri-livres");
 const formulaireLivre = document.querySelector("#formulaire-livre");
 const btnAnnuler = document.querySelector("#annuler-ajout");
 const formLivre = document.querySelector("#form-livre");
@@ -20,16 +22,16 @@ const listeLivres = document.querySelector("#mes-livres .grid");
 
 afficherLivres();
 
-// 2. Afficher le formulaire.
+//  Afficher le formulaire.
 btnAjouter.addEventListener("click", () => {
     formulaireLivre.classList.remove("hidden");
 });
 
-// 3. Masquer le formulaire.
+//  Masquer le formulaire.
 btnAnnuler.addEventListener("click", () => {
     formulaireLivre.classList.add("hidden");
 });
-// 4. Envoyer le formulaire
+//  Envoyer le formulaire
  formLivre.addEventListener("submit", (event) => {
      event.preventDefault();
 
@@ -67,4 +69,28 @@ btnAnnuler.addEventListener("click", () => {
 
 
 });
-   
+
+// rechercher et trier les livres  
+const rechercherLivres = () =>{
+
+    const recherche = inputRecherche.value.toLowerCase().trim();
+    let livresFiltres = livres.filter((livre) => {
+        return livre.titre.toLowerCase().includes(recherche)|| livre.auteur.toLowerCase().includes(recherche);
+    });
+    const tri = triLivres.value;
+    if(tri === "titre"){
+        livresFiltres.sort((a,b)=> a.titre.localeCompare(b.titre))
+    }
+
+    if (tri === "auteur") {
+    livresFiltres.sort((a, b) => a.auteur.localeCompare(b.auteur));
+    }
+
+    if (tri === "annee") {
+    livresFiltres.sort((a, b) => Number(a.annee) - Number(b.annee));
+    }
+
+    afficherLivres(livresFiltres);
+};
+inputRecherche.addEventListener("input", rechercherLivres);
+triLivres.addEventListener("change", rechercherLivres);
