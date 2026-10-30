@@ -119,7 +119,7 @@ const rechercherLivres = () =>{
 inputRecherche.addEventListener("input", rechercherLivres);
 triLivres.addEventListener("change", rechercherLivres);
 
-// modifier 
+// modifier et supprimer 
 listeLivres.addEventListener("click", (event) => {
     const bouton = event.target.closest('[data-action="modifier"]');
 
@@ -140,5 +140,21 @@ listeLivres.addEventListener("click", (event) => {
 
         formulaireLivre.classList.remove("hidden");
 
+    }
+
+    const boutonSupprimer = event.target.closest('[data-action="supprimer"]');
+
+    if (boutonSupprimer) {
+       const index = Number(boutonSupprimer.dataset.index);
+
+       const confirmation = confirm("Voulez-vous vraiment supprimer ce livre ?");
+
+       if (confirmation) {
+           livres.splice(index, 1);
+
+           localStorage.setItem("livres", JSON.stringify(livres));
+
+           afficherLivres();
+        }
     }
 });
