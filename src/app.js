@@ -7,6 +7,7 @@ const btnAjouter = document.querySelector("#btn-ajouter");
 const inputRecherche = document.querySelector('#recherche input[type="search"]');
 const triLivres = document.querySelector("#tri-livres");
 const formulaireLivre = document.querySelector("#formulaire-livre");
+const lienAjouterLivre = document.querySelector('a[href="#ajouter-livre"]');
 const btnAnnuler = document.querySelector("#annuler-ajout");
 const formLivre = document.querySelector("#form-livre");
 
@@ -19,22 +20,40 @@ const inputStatut = document.querySelector("#status");
 const erreurTitre = document.querySelector("#title-error");
 const erreurAuteur = document.querySelector("#author-error");
 const listeLivres = document.querySelector("#mes-livres .grid");
+const btnSubmit = formLivre.querySelector('button[type="submit"]');
 
 afficherLivres();
 
 //  Afficher le formulaire.
 btnAjouter.addEventListener("click", () => {
+    indexLivreAModifier = null;
+    formLivre.reset();
+    btnSubmit.textContent = "Ajouter le livre";
+    formulaireLivre.classList.remove("hidden");
+});
+
+lienAjouterLivre.addEventListener("click", () => {
+    indexLivreAModifier = null;
+    formLivre.reset();
+    btnSubmit.textContent = "Ajouter le livre";
     formulaireLivre.classList.remove("hidden");
 });
 
 //  Masquer le formulaire.
 btnAnnuler.addEventListener("click", () => {
     formulaireLivre.classList.add("hidden");
+    formLivre.reset();
+    indexLivreAModifier = null;
+    btnSubmit.textContent = "Ajouter le livre";
+
 });
+
+let indexLivreAModifier = null;
+
 //  Envoyer le formulaire
  formLivre.addEventListener("submit", (event) => {
      event.preventDefault();
-
+ 
      erreurTitre.textContent = "";
      erreurAuteur.textContent = "";
 
@@ -61,12 +80,17 @@ btnAnnuler.addEventListener("click", () => {
        statut: inputStatut.value
     };
 
-    livres.push(livre);
+    if (indexLivreAModifier === null) {
+        livres.push(livre);
+    } else {
+        livres[indexLivreAModifier] = livre;
+    }
     localStorage.setItem("livres", JSON.stringify(livres));
     afficherLivres();
     formLivre.reset();
     formulaireLivre.classList.add("hidden");
-
+ 
+    indexLivreAModifier = null;
 
 });
 
@@ -94,3 +118,27 @@ const rechercherLivres = () =>{
 };
 inputRecherche.addEventListener("input", rechercherLivres);
 triLivres.addEventListener("change", rechercherLivres);
+
+// modifier 
+listeLivres.addEventListener("click", (event) => {
+    const bouton = event.target.closest('[data-action="modifier"]');
+
+    if (bouton) {
+        const index = Number(bouton.dataset.index);
+
+        const livre = livres[index];
+
+        indexLivreAModifier = index;
+        btnSubmit.textContent = "Enregistrer les modifications";
+
+        inputTitre.value = livre.titre;
+        inputAuteur.value = livre.auteur;
+        inputAnnee.value = livre.annee;
+        inputGenre.value = livre.genre;
+        inputDescription.value = livre.description;
+        inputStatut.value = livre.statut;
+
+        formulaireLivre.classList.remove("hidden");
+
+    }
+});
