@@ -19,6 +19,8 @@ export const afficherLivres = (livresAAfficher = livres) => {
             <p class="mt-2 text-sm">Genre : ${livre.genre || "Non précisé."}</p>
             <p class="mt-2 text-sm">Description : ${livre.description || ""}</p>
             <p class="mt-2 text-sm">Statut : ${livre.statut}</p>
+            <button class="mt-4 rounded-lg bg-blue-950 px-4 py-2 text-white" data-action="modifier" data-index="${livres.indexOf(livre)}">Modifier</button>
+
         `;
 
         listeLivres.appendChild(carteLivre);
