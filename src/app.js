@@ -2,6 +2,7 @@
 
 import { livres } from "./state.js";
 import { afficherLivres } from "./ui.js";
+import { rechercherEtTrierLivres, validerLivre } from "./utils.js";
 
 const btnAjouter = document.querySelector("#btn-ajouter");
 const inputRecherche = document.querySelector('#recherche input[type="search"]');
@@ -57,18 +58,18 @@ let indexLivreAModifier = null;
      erreurTitre.textContent = "";
      erreurAuteur.textContent = "";
 
-    if( inputTitre.value.trim() === ""){
+    const validation = validerLivre(inputTitre.value, inputAuteur.value);
 
-      erreurTitre.textContent = "Le titre est obligatoire.";
-      return;
-
+    if (!validation.titreValide) {
+        erreurTitre.textContent = "Le titre est obligatoire.";
     }
 
-    if( inputAuteur.value.trim() === ""){
+    if (!validation.auteurValide) {
+        erreurAuteur.textContent = "L'auteur est obligatoire.";
+    }
 
-      erreurAuteur.textContent = "L'auteur est obligatoire.";
-      return;
-
+    if (!validation.titreValide || !validation.auteurValide) {
+        return;
     }
 
     const livre = {
@@ -95,24 +96,12 @@ let indexLivreAModifier = null;
 });
 
 // rechercher et trier les livres  
-const rechercherLivres = () =>{
-
-    const recherche = inputRecherche.value.toLowerCase().trim();
-    let livresFiltres = livres.filter((livre) => {
-        return livre.titre.toLowerCase().includes(recherche)|| livre.auteur.toLowerCase().includes(recherche);
-    });
-    const tri = triLivres.value;
-    if(tri === "titre"){
-        livresFiltres.sort((a,b)=> a.titre.localeCompare(b.titre))
-    }
-
-    if (tri === "auteur") {
-    livresFiltres.sort((a, b) => a.auteur.localeCompare(b.auteur));
-    }
-
-    if (tri === "annee") {
-    livresFiltres.sort((a, b) => Number(a.annee) - Number(b.annee));
-    }
+const rechercherLivres = () => {
+    const livresFiltres = rechercherEtTrierLivres(
+        livres,
+        inputRecherche.value,
+        triLivres.value
+    );
 
     afficherLivres(livresFiltres);
 };
